@@ -2,4 +2,8 @@
     <string name="app_name">RentaTeam</string>
     <string name="bottom_nav_title_about">О программе</string>
     <string name="bottom_nav_title_list">Список</string>
+    <string name="unknown_exception">Неизвестная ошибка</string>
+    <string name="connection_error">Проверьте соединения с интернетом</string>
+    <string name="unknown_city">Ошибка авторизации</string>
+    <string name="server_error">Сервер не отвечает</string>
 </resources>
