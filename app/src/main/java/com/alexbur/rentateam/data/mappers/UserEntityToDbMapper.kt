@@ -1,11 +1,11 @@
 package com.alexbur.rentateam.data.mappers
 
 import com.alexbur.rentateam.data.db.entity.UserDb
-import com.alexbur.rentateam.data.services.api.UserApi
+import com.alexbur.rentateam.domain.entity.UserEntity
 import javax.inject.Inject
 
-class UserApiToDbMapper @Inject constructor() : (UserApi) -> UserDb {
-    override fun invoke(user: UserApi): UserDb =
+class UserEntityToDbMapper @Inject constructor() : (UserEntity) -> UserDb {
+    override fun invoke(user: UserEntity): UserDb =
         UserDb(
             id = user.id,
             email = user.email,
