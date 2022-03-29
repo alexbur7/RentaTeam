@@ -32,12 +32,6 @@ class DetailUserFragment : Fragment(R.layout.fragment_detail_user) {
     }
 
     companion object {
-        private const val USER_KEY = "user_key"
-
-        fun newInstance(user: UserEntity): DetailUserFragment {
-            val fragment = DetailUserFragment()
-            fragment.arguments = bundleOf(USER_KEY to user)
-            return fragment
-        }
+        const val USER_KEY = "user_key"
     }
 }

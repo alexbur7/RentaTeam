@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alexbur.rentateam.R
@@ -67,17 +69,10 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
     }
 
     private fun onUserItemClick(userEntity: UserEntity) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, DetailUserFragment.newInstance(userEntity))
-            .addToBackStack(USER_LIST_NAME)
-            .commit()
-    }
-
-    companion object {
-        private const val USER_LIST_NAME = "user_list_name"
-
-        fun newInstance(): UsersListFragment {
-            return UsersListFragment()
-        }
+        findNavController().navigate(
+            R.id.action_usersListFragment_to_detailUserFragment, bundleOf(
+                DetailUserFragment.USER_KEY to userEntity
+            )
+        )
     }
 }
