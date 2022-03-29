@@ -15,5 +15,5 @@ interface UserDao {
     fun getUsers(): Maybe<List<UserDb>>
 
     @Insert(onConflict = REPLACE)
-    fun insertUsers(users: List<UserDb>): Completable
+    fun insertUsers(users: List<UserDb>)
 }

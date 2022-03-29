@@ -3,8 +3,11 @@ package com.alexbur.rentateam.presentation.userslist
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alexbur.rentateam.R
 import com.alexbur.rentateam.appComponent
@@ -31,7 +34,31 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.userListData.observe(viewLifecycleOwner) { users ->
+            adapter?.submitList(users)
+        }
+
+        viewModel.isLoadingData.observe(viewLifecycleOwner) { isVisible ->
+            binding.progressBar.isVisible = isVisible
+        }
+
+        viewModel.errorMessageIdData.observe(viewLifecycleOwner) { errorMessageId ->
+            Toast.makeText(context, errorMessageId, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isRefreshingData.observe(viewLifecycleOwner) { isRefreshing ->
+            binding.swipeRefreshLayout.isRefreshing = isRefreshing
+        }
+
         adapter = UsersAdapter(::onUserItemClick)
+
+        binding.usersList.adapter = adapter
+        binding.usersList.layoutManager = LinearLayoutManager(context)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshUsers()
+        }
     }
 
     override fun onDestroyView() {

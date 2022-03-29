@@ -12,8 +12,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class UsersListViewModel @Inject constructor(
-    usersListRepository: UsersListRepository,
-    errorHandler: ErrorHandler
+    private val usersListRepository: UsersListRepository,
+    private val errorHandler: ErrorHandler
 ) : ViewModel() {
 
     val userListData: LiveData<List<UserEntity>>
@@ -21,13 +21,15 @@ class UsersListViewModel @Inject constructor(
     val isLoadingData: LiveData<Boolean>
         get() = _isLoadingData
     val errorMessageIdData: LiveData<Int>
-        get() = _errorMessageIdData
+        get() = usersListRepository.errorMessageIdData
+    val isRefreshingData: LiveData<Boolean>
+        get() = _isRefreshingData
 
 
     private val compositeDisposable = CompositeDisposable()
     private val _userListData = MutableLiveData<List<UserEntity>>()
     private val _isLoadingData = MutableLiveData<Boolean>()
-    private val _errorMessageIdData = MutableLiveData<Int>()
+    private val _isRefreshingData = MutableLiveData<Boolean>()
 
     init {
         usersListRepository.getUsers()
@@ -43,7 +45,24 @@ class UsersListViewModel @Inject constructor(
                     _userListData.value = it
                 },
                 {
-                    _errorMessageIdData.value = errorHandler.getErrorStringIdByThrowable(it)
+                    usersListRepository.errorMessageIdData.value =
+                        errorHandler.getErrorStringIdByThrowable(it)
+                }
+            ).also { compositeDisposable.add(it) }
+    }
+
+    fun refreshUsers() {
+        usersListRepository.getUsers()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterTerminate {
+                _isRefreshingData.value = false
+            }.subscribe(
+                {
+                    _userListData.value = it
+                }, {
+                    usersListRepository.errorMessageIdData.value =
+                        errorHandler.getErrorStringIdByThrowable(it)
                 }
             ).also { compositeDisposable.add(it) }
     }

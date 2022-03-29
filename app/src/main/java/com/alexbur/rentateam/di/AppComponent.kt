@@ -4,6 +4,7 @@ import android.content.Context
 import com.alexbur.rentateam.di.modules.BindsModule
 import com.alexbur.rentateam.di.modules.DatabaseModule
 import com.alexbur.rentateam.di.modules.NetworkModule
+import com.alexbur.rentateam.di.modules.ViewModelModule
 import com.alexbur.rentateam.presentation.userslist.UsersListFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -14,7 +15,8 @@ import javax.inject.Singleton
     [
         BindsModule::class,
         NetworkModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        ViewModelModule::class
     ]
 )
 @Singleton

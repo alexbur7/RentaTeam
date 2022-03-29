@@ -12,7 +12,7 @@ interface UserSource {
 
     fun getUsers(): Observable<List<UserEntity>>
 
-    fun insertUsers(users: List<UserDb>): Completable
+    fun insertUsers(users: List<UserDb>)
 }
 
 class UserSourceImp @Inject constructor(
@@ -30,7 +30,7 @@ class UserSourceImp @Inject constructor(
         }
     }
 
-    override fun insertUsers(users: List<UserDb>): Completable {
+    override fun insertUsers(users: List<UserDb>) {
         return userDao.insertUsers(users)
     }
 

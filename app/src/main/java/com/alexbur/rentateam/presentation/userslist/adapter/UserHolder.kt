@@ -7,6 +7,7 @@ import com.alexbur.rentateam.domain.entity.UserEntity
 class UserHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun onBind(userEntity: UserEntity) {
-
+        val name = userEntity.firstName + " " + userEntity.lastName
+        binding.nameUser.text = name
     }
 }
